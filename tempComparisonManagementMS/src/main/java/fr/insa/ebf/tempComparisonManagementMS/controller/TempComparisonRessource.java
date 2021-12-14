@@ -11,24 +11,14 @@ public class TempComparisonRessource {
 	public boolean comparisonResult() {
 		return true;
 	}
-	
-	@GetMapping("/tempExt")
-	public int getTempExt() {
-		return 25;
-	}
-	
-	@GetMapping("/tempInt")
-	public int getTempInt() {
-		return 19;
-	}
-	
+
 	@GetMapping("/shouldWindowsOpen")
 	public boolean getStateWindowst() {
 		
 		// Instanciate of RestTemplate for Rest calls
 		RestTemplate restTemplate = new RestTemplate();
-		int tempExt = restTemplate.getForObject("http://localhost:8081/tempExt", int.class);
-		int tempInt = restTemplate.getForObject("http://localhost:8081/tempInt", int.class);
+		float tempExt = restTemplate.getForObject("http://localhost:8082/temperature/tempExt", float.class);
+		float tempInt = restTemplate.getForObject("http://localhost:8082/temperature/tempInt", float.class);
 		if ((tempInt < tempExt) && ((18 < tempExt) && (tempExt < 27))) {
 			return true;
 		}
