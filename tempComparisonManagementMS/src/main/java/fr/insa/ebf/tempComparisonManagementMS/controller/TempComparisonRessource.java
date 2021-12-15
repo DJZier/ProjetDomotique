@@ -1,5 +1,7 @@
 package fr.insa.ebf.tempComparisonManagementMS.controller;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -7,33 +9,36 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class TempComparisonRessource {
 	
+	private final String winMSURI = "http://localhost:8083/window/openWindow";
+	private final String tempExtMSURI = "http://localhost:8082/temperature/tempExt";
+	private final String tempIntMSURI = "http://localhost:8082/temperature/tempInt";
+	private final int idWin = 1;
+	private final int idTemp = 1;
+	private boolean status;
+	
 	@GetMapping("/comparisonResult")
 	public boolean comparisonResult() {
 		return true;
 	}
-	
-	@GetMapping("/tempExt")
-	public int getTempExt() {
-		return 25;
-	}
-	
-	@GetMapping("/tempInt")
-	public int getTempInt() {
-		return 19;
-	}
-	
-	@GetMapping("/shouldWindowsOpen")
+
+	@GetMapping("/runShouldWindowsOpen")
 	public boolean getStateWindowst() {
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
 		
 		// Instanciate of RestTemplate for Rest calls
 		RestTemplate restTemplate = new RestTemplate();
-		int tempExt = restTemplate.getForObject("http://localhost:8081/tempExt", int.class);
-		int tempInt = restTemplate.getForObject("http://localhost:8081/tempInt", int.class);
+		float tempExt = restTemplate.getForObject(tempExtMSURI +idTemp , float.class);
+		float tempInt = restTemplate.getForObject(tempIntMSURI, float.class);
 		if ((tempInt < tempExt) && ((18 < tempExt) && (tempExt < 27))) {
-			return true;
+			status = true;
 		}
 		else {
-			return false;
-		}		
+			status = false;
+		}
+		restTemplate.put(winMSURI + "/" + idWin, status);
+		return status;
 	}
 }
