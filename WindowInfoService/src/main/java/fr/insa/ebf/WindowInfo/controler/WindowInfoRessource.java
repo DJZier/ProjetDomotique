@@ -3,7 +3,11 @@ package fr.insa.ebf.WindowInfo.controler;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +36,17 @@ public class WindowInfoRessource {
 		else {
 			System.out.println("Window already in good state");
 		}
+	}
+	
+	@PostMapping("/addWindow")
+	public ResponseEntity<Window> addNewWindow(@RequestBody Window newWindow){
+		myWindowsList.add(newWindow);
+		return new ResponseEntity<Window>(myWindowsList.get(newWindow.getId()), HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/listWindow")
+	public List <Window> showListWindow(){
+		return myWindowsList;
 	}
 }
 
