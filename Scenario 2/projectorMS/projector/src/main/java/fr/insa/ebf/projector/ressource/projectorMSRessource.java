@@ -11,17 +11,21 @@ import fr.insa.ebf.projector.model.ProjectorMSModel;
 @RequestMapping("/projector")
 public class projectorMSRessource {
 	
-	@GetMapping("/projector/Power/{statu}")
-	public void changetWindowState(@PathVariable boolean statu) {
+	@GetMapping("/Power/{statu}")
+	public String changetProjectorState(@PathVariable boolean statu) {
 		ProjectorMSModel myProjector = new ProjectorMSModel(false);
+		String response = null;
 		if (statu) {
 			myProjector.powerProjector();
 			System.out.println("Projector powered on");
+			response="Projector powered on";
 		}
 		else if (!statu) {
 			myProjector.shutdownProjector();
-			System.out.println("Projector shutodwned");
+			System.out.println("Projector shutdowned");
+			response="Projector shutdowned";
 		}
+		return response;
 	}
 }
 
