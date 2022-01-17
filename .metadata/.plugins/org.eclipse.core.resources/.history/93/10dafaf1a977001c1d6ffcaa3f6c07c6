@@ -1,0 +1,5 @@
+package fr.insa.ebf.boxDomo.model;
+
+public class Window {
+
+}
