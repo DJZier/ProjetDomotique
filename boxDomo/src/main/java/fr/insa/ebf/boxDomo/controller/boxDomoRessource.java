@@ -17,9 +17,9 @@ public class boxDomoRessource {
 	private final String winMSURI = "http://localhost:8083/window";
 	private final String tempExtMSURI = "http://localhost:8082/temperature/tempExt";
 	private final String tempIntMSURI = "http://localhost:8082/temperature/tempInt";
-	private final String projoMSURI = "http://localhost:8084";
-	private final String shutterMSURI = "http://localhost:8085";
-	private final String lightMSURI = "http://localhost:8086";
+	private final String projoMSURI = "http://localhost:8084/projector";
+	private final String shutterMSURI = "http://localhost:8085/shutter";
+	private final String lightMSURI = "http://localhost:8086/light";
 	private final int idWin = 1;
 	//private final int idTemp = 1;
 	private boolean status;
@@ -76,7 +76,7 @@ public class boxDomoRessource {
 		
 		String stateProjo = restTemplate.getForObject(projoMSURI+"/Power/true", String.class);
 		System.out.print(stateProjo);
-		String stateLight = restTemplate.getForObject(lightMSURI+"/turnOff", String.class);
+		String stateLight = restTemplate.getForObject(lightMSURI+"/Power/false", String.class);
 		System.out.print(stateLight);
 		if ((8 <time.getHour()) && (18 > time.getHour())) {
 			stateShutter = restTemplate.getForObject(shutterMSURI+"/closeShutter", String.class);
@@ -93,12 +93,14 @@ public class boxDomoRessource {
 		LocalTime time = LocalTime.now();
 		RestTemplate restTemplate = new RestTemplate();
 		String stateProjo = restTemplate.getForObject(projoMSURI+"/Power/false", String.class);
-		System.out.print(stateProjo);
+		System.out.println(stateProjo);
+		
 		String stateShutter = restTemplate.getForObject(shutterMSURI+"/openShutter", String.class);
-		System.out.print(stateShutter);
-		if (!(8 <time.getHour()) && (18 > time.getHour())) { //If the night has come
-			String stateLight = restTemplate.getForObject(lightMSURI+"/turnOn", String.class);
-			System.out.print(stateLight);
+		System.out.println(stateShutter);
+		
+		if (!((8 <time.getHour()) && (18 > time.getHour()))) { //If the night has come
+			String stateLight = restTemplate.getForObject(lightMSURI+"/Power/true", String.class);
+			System.out.println(stateLight);
 		}
 	}
 

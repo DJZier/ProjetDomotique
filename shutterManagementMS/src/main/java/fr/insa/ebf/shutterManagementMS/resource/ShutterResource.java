@@ -19,7 +19,7 @@ public class ShutterResource {
 	@Autowired
 	private Shutter myShutters;
 	
-	@GetMapping("/openShutters/")
+	@GetMapping("/openShutter")
 	public String openShutters() {
 		String response=null;
 		if (!myShutters.getState()) {
